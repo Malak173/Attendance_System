@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import '/globals.dart' as globals;
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DioHelper {
   static Dio? dio;
@@ -10,13 +11,6 @@ class DioHelper {
       baseUrl: "https://attendance-proof-production.up.railway.app/",
       receiveDataWhenStatusError: true,
     ));
-    /*(dio!.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      print('onHttpClientCreate entered...'); // this code is never reached
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      return client;
-    };*/
   }
   static Future<Response> login(
       {required String email, required String password}) async {
@@ -39,5 +33,28 @@ class DioHelper {
     }
 
     return response!;
+  }
+
+  static Future<Response?> userInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    Map<String, dynamic> Headers = {
+      "Content-Type":"application/json",
+      "Authorization": "JWT ${globals.token}"
+    };
+
+    Response response = await dio!
+        .get('auth/users/me/', options: Options(headers: Headers));
+    if(response.statusCode == 200){
+      await prefs.setString('DoctorName', response.data['username']);
+
+
+      // email= response.data['email'] ;
+      // nameStudent= response.data['first_name'] +response.data['last_name'] ;
+
+      //return response.data;
+    }
+    return null;
+
   }
 }

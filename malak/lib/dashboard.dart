@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:excel/excel.dart' as exc;
+// import 'package:path_provider/path_provider.dart';
 import 'exceldata.dart';
+import 'package:path/path.dart' as path;
+
 
 class DashboardMainScreen extends StatefulWidget {
   const DashboardMainScreen({super.key});
@@ -40,10 +43,8 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
     AttendanceDate(Name: 'Rehab Refaat', Id: '14253390', TotalPresant: '18%', )
         .toList(),
   ];
-  var valuechoose;
-  var selectedDate;
 
-
+  // String filePath = 'exported_file.xlsx';
   void exportToExcel(List<List<dynamic>> data, String filePath) {
     var excel = exc.Excel.createExcel();
     var sheet = excel['Sheet1'];
@@ -57,19 +58,14 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
       }
     }
 
-    // excel.save(filePath);
     excel.save();
+    // excel.save(filePath);
+
+    // excel.save();
   }
 
-  List<List<dynamic>> data = [
-    ['Name', 'Age', 'Email'],
-    ['John', 25, 'john@example.com'],
-    ['Jane', 30, 'jane@example.com'],
-    // Add more rows as needed
-  ];
-
-  String filePath = '/path/to/exported_file.xlsx';
-
+  var valuechoose;
+  var selectedDate;
   List<String> itemList = [
     'COMP 401',
     'COMP 302',
@@ -93,56 +89,12 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
           children: [
             Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: DropdownButton(
-                    hint: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Text('Select Course:'),
-                    ),
-                    value: valuechoose,
-                    onChanged: (newValue) {
-                      setState(() {
-                        valuechoose = newValue;
-                      });
-                    },
-                    items: itemList.map((valueItem) {
-                      return DropdownMenuItem(
-                        value: valueItem,
-                        child: Text(valueItem),
-                      );
-                    }).toList(),
-                  ),
-                ),
                 const SizedBox(
                   width: 10,
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: DropdownButton(
-                //     hint: const Padding(
-                //       padding: EdgeInsets.all(8.0),
-                //       child: Text('Select Date:'),
-                //     ),
-                //     value: selectedDate,
-                //     onChanged: (newValue) {
-                //       setState(() {
-                //         selectedDate = newValue;
-                //       });
-                //     },
-                //     items: itemList2.map((valueItem) {
-                //       return DropdownMenuItem(
-                //         value: valueItem,
-                //         child: Text(valueItem),
-                //       );
-                //     }).toList(),
-                //   ),
-                // ),
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 50,),
             Center(
               child: Row(
                 children: [
@@ -163,7 +115,9 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                           ),
                           MaterialButton(
                             onPressed: () {
+                              var filePath = 'exported_file.xlsx';
                               exportToExcel(Data, filePath);
+                              print('Excel file saved at :$filePath');
                             },
                             child: Container(
                               height: 30,
@@ -261,7 +215,10 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                             width: 110,
                           ),
                           MaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              var filePath = 'exported_file.xlsx';
+                              exportToExcel(Data2, filePath);
+                            },
                             child: Container(
                               height: 30,
                               width: 100,

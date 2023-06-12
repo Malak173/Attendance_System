@@ -99,9 +99,9 @@ class SlideBar extends StatelessWidget {
                   ),
                 ),
               ],
-              contents: [
-                const ReportDashboard(),
-                const SelectImage(),
+              contents:const [
+                 ReportDashboard(),
+                 SelectImage(),
                 DashboardMainScreen(),
               ],
             ),
