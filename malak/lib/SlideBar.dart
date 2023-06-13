@@ -6,6 +6,7 @@ import 'LoginScreen.dart';
 import 'ReportDashboard.dart';
 import 'SelectImage.dart';
 import 'dashboard.dart';
+import 'dashboardAbsent.dart';
 
 class SlideBar extends StatelessWidget {
   const SlideBar({super.key});
@@ -98,11 +99,33 @@ class SlideBar extends StatelessWidget {
                     ),
                   ),
                 ),
+                Tab(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 20.0, top: 10, bottom: 8),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 0.02,
+                        ),
+                        Row(
+                          children: [
+                            Icon(Icons.cancel_outlined),
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text('Absent'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
               contents:const [
                  ReportDashboard(),
                  SelectImage(),
-                DashboardMainScreen(),
+                 DashboardMainScreen(),
+                 DashboardAbsent(),
               ],
             ),
           ),

@@ -17,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   var emailControlar = TextEditingController();
   var passwordControlar = TextEditingController();
 
-  bool isPassword = false;
+  bool isPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           decoration: InputDecoration(
                             hintText:'Email',
-                            labelText:'  Email',
+                            labelText:'Email',
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(40),
                               borderSide: BorderSide(
@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       , TextFormField(
                           controller: passwordControlar,
                           keyboardType:TextInputType.visiblePassword,
-                          obscureText: isPassword ? true : false,
+                          obscureText: isPassword,
                           validator: (value) {
                             if (value == 0 || value == '') {
                               return 'Please check your Password';
@@ -106,14 +106,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           decoration: InputDecoration(
                             hintText:'Password',
                             labelText:'  Password',
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isPassword = !isPassword ;
-                                });
-                              },
-                              icon: isPassword ? Icon(Icons.visibility_off)
-                                  : Icon(Icons.visibility),
+                            suffixIcon:GestureDetector(onTap: (){
+                              setState(() {
+                                isPassword=!isPassword;
+                              });
+                            },
+                                child: Icon(isPassword? Icons.visibility_off : Icons.visibility,)
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(40),

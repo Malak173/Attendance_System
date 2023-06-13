@@ -1,8 +1,8 @@
 class AttendanceDate{
 
-  final String Name;
-  final String Id;
-  final String TotalPresant;
+   String? Name;
+   String? Id;
+   String? TotalPresant;
 
 
   AttendanceDate({

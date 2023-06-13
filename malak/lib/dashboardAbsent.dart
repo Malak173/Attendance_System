@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:excel/excel.dart' as exc;
 import 'package:malak/api/api_manager.dart';
@@ -6,14 +5,14 @@ import 'package:malak/api/api_manager.dart';
 import 'exceldata.dart';
 import 'package:path/path.dart' as path;
 
-class DashboardMainScreen extends StatefulWidget {
-  const DashboardMainScreen({super.key});
+class DashboardAbsent extends StatefulWidget {
+  const DashboardAbsent({super.key});
 
   @override
-  State<DashboardMainScreen> createState() => _DashboardMainScreenState();
+  State<DashboardAbsent> createState() => _DashboardAbsentState();
 }
 
-class _DashboardMainScreenState extends State<DashboardMainScreen> {
+class _DashboardAbsentState extends State<DashboardAbsent> {
   // final List<List<dynamic>> Data = [
   //   AttendanceDate(Name: 'malak Mohammed ', Id: '14253351', TotalPresant: '70%',)
   //       .toList(),
@@ -107,7 +106,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: FutureBuilder(
-              future: ApiManeger.GetStudentsAttandance(),
+              future: ApiManeger.GetStudentsAbsent(),
               builder: (BuildContext, snapshot) {
                 var data = snapshot.data?.count;
                 print(data);
@@ -117,13 +116,12 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                 if (snapshot.hasError) {
                   return Text(snapshot.error.toString());
                 }
-                List<AttendanceDate> AttendData =
+                List<AttendanceDate> AbsentData =
                     snapshot.data?.results!.map((attend) {
                           return AttendanceDate(
-                              Id: '${attend.id}' ?? '1',
-                              Name: attend.student?.firstName ?? 'malak',
-                              TotalPresant:
-                                  "${attend.attendancePercentage}" ?? '20%');
+                              Id: '${attend.id}',
+                              Name: attend.student?.firstName,
+                              TotalPresant: "${attend.absentPercentage}");
                         }).toList() ??
                         [];
                 return Padding(
@@ -151,9 +149,9 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                                     const Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Text(
-                                        "Attends",
+                                        "Absence",
                                         style: TextStyle(
-                                            color: Color(0xff92E3A9),
+                                            color: Color(0xE0FF686D),
                                             fontSize: 20),
                                       ),
                                     ),
@@ -163,9 +161,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                                     MaterialButton(
                                       onPressed: () {
                                         var filePath = 'exported_file.xlsx';
-                                        exportToExcel(
-                                            AttendData.cast<List>(), filePath);
-                                        print('Excel file saved at :$filePath');
+                                        exportToExcel(Data2, filePath);
                                       },
                                       child: Container(
                                         height: 30,
@@ -173,7 +169,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(12),
-                                          color: const Color(0xff92E3A9),
+                                          color: Colors.red.withOpacity(0.8),
                                         ),
                                         child: const Center(
                                             child: Text(
@@ -196,7 +192,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12.0),
                                     border: Border.all(
-                                      color: const Color(0xff92E3A9),
+                                      color: Colors.red.withOpacity(0.8),
                                     ),
                                   ),
                                   child: SingleChildScrollView(
@@ -206,46 +202,41 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                                       child: DataTable(
                                         headingRowColor:
                                             MaterialStateColor.resolveWith(
-                                                (states) =>
-                                                    const Color(0xff92E3A9)
-                                                        .withOpacity(0.8)),
+                                                (states) => Colors.red
+                                                    .withOpacity(0.8)),
                                         columns: const [
                                           DataColumn(
                                             label: Text(
                                               'Name',
                                               style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                           ),
                                           DataColumn(
                                             label: Text(
                                               'User ID',
                                               style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                           ),
                                           DataColumn(
                                             label: Text(
                                               'Rate',
                                               style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                           ),
                                         ],
-                                        rows: (snapshot.data?.results ?? [])
-                                            .map((attend) {
+                                        rows: AbsentData.map((data) {
                                           return DataRow(cells: [
                                             DataCell(Text(
-                                                '${attend.student?.firstName}')),
-                                            DataCell(Text('${attend.id}')),
+                                                '${data.Name}')),
+                                            DataCell(Text('${data.Id}')),
                                             DataCell(Text(
-                                                '${attend.attendancePercentage}%')),
+                                                '${data.TotalPresant}%')),
                                           ]);
                                         }).toList(),
                                       ),
@@ -253,7 +244,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                                   ),
                                 ),
                               ],
-                            ),
+                            )
                           ],
                         ),
                       ),
